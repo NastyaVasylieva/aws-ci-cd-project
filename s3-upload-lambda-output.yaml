@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  LambdaApplication:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.epam.handler::SQSProcessHandler
+      FunctionName: sqs-retrieve-lambda
+      Runtime: java8
+      Description: Lambda that retrieve messages from SQS
+      MemorySize: 512
+      Timeout: 10
+      Policies:
+      - AWSLambda_FullAccess
+      - AWSLambdaSQSQueueExecutionRole
+      - AmazonSNSFullAccess
+      - AmazonSQSFullAccess
+      Tracing: Active
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: Canary10Percent10Minutes
+      CodeUri: s3://anastasiia-vasylieva-images/s3-upload.zip/8abf4f644f2a0377bc7fec65b9319796
+    Metadata:
+      SamResourceId: LambdaApplication
